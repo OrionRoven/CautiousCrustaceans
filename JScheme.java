@@ -43,3 +43,23 @@ public class JScheme {
     }
   }
 }
+//Interpreter: Takes in a stream of tokens and evaluates them on a stack
+class Interpreter {
+  private String[] _tokens;
+  private Stack<Value> _evalStack; 
+  private HashMap<String, Value> _vars;
+  public Interpreter(String[] tokens) {
+    _tokens = tokens;
+    _evalStack = new Stack<>();
+    _vars = new HashMap<>();
+  }
+}
+
+class Value{
+  private int _type;
+  private String _value;
+  public static final int INTEGER = 0;
+  public static final int FLOAT = 1;
+  public static final int STRING = 2;
+  public Value(int type, String value){_type = type; _value = value;}
+}
