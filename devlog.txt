@@ -1,0 +1,10 @@
+Cautious Crusaceans :: Orion Roven, Joshua Yagupsky, Jonathan Song
+APCS pd7
+Final Project: Scheme interpreter
+time spent: .5 hrs
+
+TODO:
+  * Implement prefix notation
+
+5-25
+  * Added the ability to read in Scheme from an .scm file, and formatted this text so that it's ready to be passed into the interpreter.
