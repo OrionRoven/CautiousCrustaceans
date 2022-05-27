@@ -7,6 +7,8 @@ time spent: .5 hrs
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Stack;
+import java.util.HashMap;
 public class JScheme {
   public static void main(String[] args) {
     String in = "";
@@ -33,9 +35,11 @@ public class JScheme {
         }
       }
       String[] tokens = in.split("\\s+");
-      for (String t : tokens) {
-        System.out.println(t);
-      }
+      // for (String t : tokens) {
+      //   System.out.println(t);
+      // }
+      Interpreter master = new Interpreter(tokens);
+      System.out.println(master.evaluate());
     }
     catch(FileNotFoundException e) {
       System.out.println("Error: Could not find file " + e.getMessage());
@@ -43,15 +47,22 @@ public class JScheme {
     }
   }
 }
+
 //Interpreter: Takes in a stream of tokens and evaluates them on a stack
 class Interpreter {
   private String[] _tokens;
-  private Stack<Value> _evalStack; 
+  private Stack<String> _evalStack;
   private HashMap<String, Value> _vars;
   public Interpreter(String[] tokens) {
     _tokens = tokens;
     _evalStack = new Stack<>();
     _vars = new HashMap<>();
+  }
+  public String evaluate() {
+    for (int i = _tokens.length - 1; i >= 0; i--) {
+      _evalStack.push(this._tokens[i]);
+    }
+    return "";
   }
 }
 
