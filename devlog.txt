@@ -8,3 +8,8 @@ TODO:
 
 5-25
   * Added the ability to read in Scheme from an .scm file, and formatted this text so that it's ready to be passed into the interpreter.
+
+5-26
+  * Upload flag
+  * Worked on proposal
+  * v0 in place
