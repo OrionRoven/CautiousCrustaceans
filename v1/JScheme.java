@@ -59,10 +59,40 @@ class Interpreter {
     _vars = new HashMap<>();
   }
   public String evaluate() {
-    for (int i = _tokens.length - 1; i >= 0; i--) {
-      _evalStack.push(this._tokens[i]);
+    String op = "";
+    for (int i = _tokens.length - 1; i >= 1; i--) {
+      if (this._tokens[i].equals("(")) {
+        op = _evalStack.pop();
+        this.unpack(op);
+      }
+      else{
+        _evalStack.push(this._tokens[i]);
+      }
     }
-    return "";
+
+    return _evalStack.peek();
+  }
+  private void unpack(String op){
+    if (op.equals("*") || op.equals("-") || op.equals("+")) {
+      _evalStack.push(this.mathify(op));
+    }
+  }
+  private String mathify(String op){
+    int runningTotal = Integer.parseInt(_evalStack.pop());
+    String next = _evalStack.pop();
+    while(! next.equals(")")){
+      if (op.equals("*")) {
+        runningTotal *= Integer.parseInt(next);
+      }
+      else if (op.equals("-")){
+        runningTotal -= Integer.parseInt(next);
+      }
+      else {
+        runningTotal += Integer.parseInt(next);
+      }
+      next = _evalStack.pop();
+    }
+    return runningTotal + "";
   }
 }
 
