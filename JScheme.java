@@ -1,5 +1,5 @@
 /*
-Cautious Crusaceans :: Orion Roven, Joshua Yagupsky, Jonathan Song
+Cautious Crustaceans :: Orion Roven, Joshua Yagupsky, Jonathan Song
 APCS pd7
 Final Project: Scheme interpreter
 time spent: .5 hrs
@@ -19,20 +19,10 @@ public class JScheme {
     try {
       File f = new File(args[0]);
       Scanner sc = new Scanner(f);
+      sc.useDelimiter(" ");
       String next = "";
       while (sc.hasNext()) {
-        next = sc.next();
-        in += " ";
-        if (next.charAt(0) == '(') {
-          in += "( ";
-          next = next.substring(1);
-        }
-        if (next.charAt(next.length()-1) == ')') {
-          in += next.substring(0, next.length()-1) + " )";
-        }
-        else {
-          in += next;
-        }
+        in += " " + sc.next();
       }
       String[] tokens = in.split("\\s+");
       // for (String t : tokens) {
@@ -73,6 +63,10 @@ class Interpreter {
     return _evalStack.peek();
   }
   private void unpack(String op){
+    if (op.equals("pass")) {
+      _evalStack.pop();
+      return;
+    }
     if (op.equals("*") || op.equals("-") || op.equals("+")) {
       _evalStack.push(this.mathify(op));
     }

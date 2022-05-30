@@ -1,6 +1,7 @@
 Cautious Crusaceans :: Orion Roven, Joshua Yagupsky, Jonathan Song
 APCS pd7
 Final Project: Scheme interpreter
+2022-05-31
 time spent: .5 hrs
 
 TODO:
@@ -21,3 +22,6 @@ TODO:
 5-30
   BUG: (- 7 (+ 1 5) ) does not compile while (- 7 (+ 1 5)) does
   * Problem with spacing of parenthesis
+  * Solution: Spaces are REQUIRED between every token.
+  * Added the ( pass ) keyword which simply does nothing. This will be useful when we want to create conditional statements. Instead of having seperate if and if-else commands, we can just have an if-else command and do nothing if the condition is false
+  TODO: evaluate multiple math expressions in the same file
