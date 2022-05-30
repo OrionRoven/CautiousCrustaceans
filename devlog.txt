@@ -13,3 +13,11 @@ TODO:
   * Upload flag
   * Worked on proposal
   * v0 in place
+
+5-27
+  * Worked on evaluating expressions exhibiting prefix notation
+  * Got single operation expressions working
+
+5-30
+  BUG: (- 7 (+ 1 5) ) does not compile while (- 7 (+ 1 5)) does
+  * Problem with spacing of parenthesis
