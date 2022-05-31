@@ -25,3 +25,7 @@ TODO:
   * Solution: Spaces are REQUIRED between every token.
   * Added the ( pass ) keyword which simply does nothing. This will be useful when we want to create conditional statements. Instead of having seperate if and if-else commands, we can just have an if-else command and do nothing if the condition is false
   TODO: evaluate multiple math expressions in the same file
+
+5-31
+  * Implemented division as it works in Java, including integer division.
+  * Added floating point arithmetic

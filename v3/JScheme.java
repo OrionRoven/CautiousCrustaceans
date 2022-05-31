@@ -67,26 +67,86 @@ class Interpreter {
       _evalStack.pop();
       return;
     }
-    if (op.equals("*") || op.equals("-") || op.equals("+")) {
+    if (op.equals("*") || op.equals("-") || op.equals("+") || op.equals("/")) {
       _evalStack.push(this.mathify(op));
     }
   }
   private String mathify(String op){
-    int runningTotal = Integer.parseInt(_evalStack.pop());
+    String first = _evalStack.pop();
+    double runningTotal = Double.parseDouble(first);
     String next = _evalStack.pop();
+    boolean doubleMode = !isInty(first);
     while(! next.equals(")")){
-      if (op.equals("*")) {
-        runningTotal *= Integer.parseInt(next);
+      if (doubleMode) {
+        if (op.equals("*")) {
+          runningTotal *= Double.parseDouble(next);
+        }
+        else if (op.equals("-")){
+          runningTotal -= Double.parseDouble(next);
+        }
+        else if (op.equals("+")) {
+          runningTotal += Double.parseDouble(next);
+        }
+        else {
+          runningTotal /= Double.parseDouble(next);
+        }
       }
-      else if (op.equals("-")){
-        runningTotal -= Integer.parseInt(next);
+      else if (!isInty(next)) {
+        doubleMode = true;
+        continue;
       }
       else {
-        runningTotal += Integer.parseInt(next);
+        int u = Integer.parseInt(next);
+        if (op.equals("*")) {
+            runningTotal = ((int) runningTotal) * u;
+          }
+        else if (op.equals("-")){
+            runningTotal = ((int) runningTotal) - u;
+        }
+        else if (op.equals("+")) {
+            runningTotal = ((int) runningTotal) + u;
+        }
+        else {
+            runningTotal = ((int) runningTotal) / u;
+        }
       }
+      // if (op.equals("*")) {
+      //   runningTotal *= Double.parseDouble(next);
+      // }
+      // else if (op.equals("-")){
+      //   runningTotal -= Double.parseDouble(next);
+      // }
+      // else if (op.equals("+")) {
+      //   runningTotal += Double.parseDouble(next);
+      // }
+      // else if (doubleMode) {
+      //   runningTotal /= Double.parseDouble(next);
+      // }
+      // else {
+      //   try {
+      //     int u = Integer.parseInt(next);
+      //     runningTotal = ((int) runningTotal) / u;
+      //   }
+      // }
       next = _evalStack.pop();
     }
-    return runningTotal + "";
+    if (doubleMode) {
+      return runningTotal + "";
+    }
+    else {
+      return ((int) runningTotal) + "";
+    }
+  }
+  public static boolean isInty(String s){
+    if (s == null) {
+        return false;
+    }
+    try {
+        int u = Integer.parseInt(s);
+    } catch (NumberFormatException nfe) {
+        return false;
+    }
+    return true;
   }
 }
 
