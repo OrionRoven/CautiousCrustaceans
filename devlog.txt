@@ -29,3 +29,4 @@ TODO:
 5-31
   * Implemented division as it works in Java, including integer division.
   * Added floating point arithmetic
+  * Created flowchart showing different states of our program
