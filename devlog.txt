@@ -67,3 +67,8 @@ Orion :: Implemented division as it works in Java, including integer division.
 Jonathan :: Added floating point arithmetic
 Joshua :: Created flowchart showing different states of our program
 ==============================================================
+
+2022-06-01
+--------------------------------------------------------------
+Orion :: Implemented variables, but only in the form ( / 6 x ) ( let x 12.0 ) where the let statement is on the right
+==============================================================
