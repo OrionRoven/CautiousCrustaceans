@@ -1,32 +1,69 @@
-Cautious Crusaceans :: Orion Roven, Joshua Yagupsky, Jonathan Song
-APCS pd7
-Final Project: Scheme interpreter
+Cautious Crustaceans
+Orion Roven
+Jonathan Song
+Joshua Yagupsky
+pd 7
+---------------------
+Scheme/Lisp interpreter
+
+
+/////////// Zone of Reflection \\\\\\\\\\\
+------------------------------------------
+OBSTACLES OVERCOME
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+UNRESOLVED ISSUES
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* (- 7 (+ 1 5) ) does not compile while (- 7 (+ 1 5)) does
+* Problem with spacing of parenthesis
+* Solution: Spaces are REQUIRED between every token.
+* Added the ( pass ) keyword which simply does nothing. This will be useful when we want to create conditional statements. Instead of having seperate if and if-else commands, we can just have an if-else command and do nothing if the condition is false
+TODO: evaluate multiple math expressions in the same file
+
+COOL STUFF LEARNED
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+MID-DEVELOPMENT DESIGN CHANGES
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+LESSONS LEARNED
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+ ______   ______   __   __   __       ______   _______
+/_____/\ /_____/\ /_/\ /_/\ /_/\     /_____/\ /______/\
+\:::_ \ \\::::_\/_\:\ \\ \ \\:\ \    \:::_ \ \\::::__\/__
+ \:\ \ \ \\:\/___/\\:\ \\ \ \\:\ \    \:\ \ \ \\:\ /____/\
+  \:\ \ \ \\::___\/_\:\_/.:\ \\:\ \____\:\ \ \ \\:\\_  _\/
+   \:\/.:| |\:\____/\\ ..::/ / \:\/___/\\:\_\ \ \\:\_\ \ \
+    \____/_/ \_____\/ \___/_(   \_____\/ \_____\/ \_____\/
+==============================================================
+
+
+2022-05-25
+--------------------------------------------------------------
+Orion :: Added the ability to read in Scheme from an .scm file, and formatted this text so that it's ready to be passed into the interpreter.
+==============================================================
+
+2022-05-26
+--------------------------------------------------------------
+Orion :: Uploaded flag
+==============================================================
+
+2022-05-27
+--------------------------------------------------------------
+Jonathan :: Worked on evaluating expressions exhibiting prefix notation
+Joshua :: Got single operation expressions working
+==============================================================
+
 2022-05-31
-time spent: .5 hrs
-
-TODO:
-  * Implement prefix notation
-
-5-25
-  * Added the ability to read in Scheme from an .scm file, and formatted this text so that it's ready to be passed into the interpreter.
-
-5-26
-  * Upload flag
-  * Worked on proposal
-  * v0 in place
-
-5-27
-  * Worked on evaluating expressions exhibiting prefix notation
-  * Got single operation expressions working
-
-5-30
-  BUG: (- 7 (+ 1 5) ) does not compile while (- 7 (+ 1 5)) does
-  * Problem with spacing of parenthesis
-  * Solution: Spaces are REQUIRED between every token.
-  * Added the ( pass ) keyword which simply does nothing. This will be useful when we want to create conditional statements. Instead of having seperate if and if-else commands, we can just have an if-else command and do nothing if the condition is false
-  TODO: evaluate multiple math expressions in the same file
-
-5-31
-  * Implemented division as it works in Java, including integer division.
-  * Added floating point arithmetic
-  * Created flowchart showing different states of our program
+--------------------------------------------------------------
+Orion :: Implemented division as it works in Java, including integer division.
+Jonathan :: Added floating point arithmetic
+Joshua :: Created flowchart showing different states of our program
+==============================================================
