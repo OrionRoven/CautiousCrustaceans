@@ -11,7 +11,7 @@ Scheme/Lisp interpreter
 ------------------------------------------
 OBSTACLES OVERCOME
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+* parentehsis stuff
 
 UNRESOLVED ISSUES
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -70,5 +70,11 @@ Joshua :: Created flowchart showing different states of our program
 
 2022-06-01
 --------------------------------------------------------------
-Orion :: Implemented variables, but only in the form ( / 6 x ) ( let x 12.0 ) where the let statement is on the rightss
+Orion :: Implemented variables, but only in the form ( / 6 x ) ( let x 12.0 ) where the let statement is on the right
+==============================================================
+
+2022-06-02
+--------------------------------------------------------------
+Orion :: Implemented assigning variables to variables e.g. (/ 6 y) (let y x) (let x 12.0)
+Joshua :: Fixed parenthesis bug (no longer require spaces between each token)
 ==============================================================
