@@ -101,24 +101,41 @@ class Interpreter {
     }
     _vars.put(name, new Value(type, value));
     _evalStack.pop();
+   }
+  private String boolify (String op) {
+    String first = _evalStack.pop();
+    if (!isBooly(first)){ first = _vars.get(first).getValue();}
+    if (op.equals("not")){
+      _evalStack.pop(); // Clear open paren
+      if (first.equals("true")){
+        return "false";
+      }
+      else {
+        return "true";
+      }
+    }
+    if (op.equals("or")){
+      String next = first;
+      boolean runningTotal = false;
+      while (!next.equals(")")){
+        if (!isBooly(next)){ next = _vars.get(next).getValue();}
+        runningTotal = runningTotal || Boolean.parseBoolean(next);
+        next = _evalStack.pop();
+      }
+      return runningTotal + "";
+    }
+    if (op.equals("and")){
+      String next = first;
+      boolean runningTotal = true;
+      while (!next.equals(")")){
+        if (!isBooly(next)){ next = _vars.get(next).getValue();}
+        runningTotal = runningTotal && Boolean.parseBoolean(next);
+        next = _evalStack.pop();
+      }
+      return runningTotal + "";
+    }
+    return "false";
   }
-	private String boolify (String op) {
-		String first = _evalStack.pop();
-		if (!isBooley(first)){ first = _valrs.get(first).getValue();}
-		if (op.equals("not")){
-			_evalStack.pop(); // Clear open paren
-			if (first.equals("true"){
-				return "false";
-			}
-			else {
-				return "true";
-			}
-		}
-		if (op.equals("or")){
-			String next = first;
-			while (!next.equals(")")){
-				if (!isBooley(next)){ next = _valrs.get(next).getValue();}
-			}
   private String mathify(String op){
     String first = _evalStack.pop();
     //If first isn't a value, try to get one from the HashMap

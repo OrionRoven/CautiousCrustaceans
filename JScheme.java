@@ -80,6 +80,9 @@ class Interpreter {
     if (op.equals("*") || op.equals("-") || op.equals("+") || op.equals("/")) {
       _evalStack.push(this.mathify(op));
     }
+    if (op.equals("and") || op.equals("or") || op.equals("not")) {
+			_evalStack.push(this.boolify(op));
+		}
   }
   private void addVar(){
     String name = _evalStack.pop();
@@ -87,15 +90,51 @@ class Interpreter {
     int type = 0;
     if (!isValuey(value)){
       value = _vars.get(value).getValue();
+      type = _vars.get(value).getType();
     }
-    if (isInty(value)) {
+    else if (isInty(value)) {
       type = Value.INTEGER;
     }
+    else if (isBooly(value)){type = Value.BOOLEAN;}
     else {
       type = Value.FLOAT;
     }
     _vars.put(name, new Value(type, value));
     _evalStack.pop();
+   }
+  private String boolify (String op) {
+    String first = _evalStack.pop();
+    if (!isBooly(first)){ first = _vars.get(first).getValue();}
+    if (op.equals("not")){
+      _evalStack.pop(); // Clear open paren
+      if (first.equals("true")){
+        return "false";
+      }
+      else {
+        return "true";
+      }
+    }
+    if (op.equals("or")){
+      String next = first;
+      boolean runningTotal = false;
+      while (!next.equals(")")){
+        if (!isBooly(next)){ next = _vars.get(next).getValue();}
+        runningTotal = runningTotal || Boolean.parseBoolean(next);
+        next = _evalStack.pop();
+      }
+      return runningTotal + "";
+    }
+    if (op.equals("and")){
+      String next = first;
+      boolean runningTotal = true;
+      while (!next.equals(")")){
+        if (!isBooly(next)){ next = _vars.get(next).getValue();}
+        runningTotal = runningTotal && Boolean.parseBoolean(next);
+        next = _evalStack.pop();
+      }
+      return runningTotal + "";
+    }
+    return "false";
   }
   private String mathify(String op){
     String first = _evalStack.pop();
@@ -202,7 +241,10 @@ class Interpreter {
     }
     return true;
   }
-  public static boolean isValuey(String s){return isFloaty(s) || isInty(s);}
+  public static boolean isValuey(String s){return isFloaty(s) || isInty(s) || isBooly(s);}
+  public static boolean isBooly(String s){
+    if (s.equals("true") || s.equals("false")){return true;} return false;    
+  }
 }
 
 class Value{
@@ -210,6 +252,7 @@ class Value{
   private String _value;
   public static final int INTEGER = 0;
   public static final int FLOAT = 1;
+  public static final int BOOLEAN = 2;
   public Value(int type, String value){_type = type; _value = value;}
   public int getType(){return this._type;}
   public String getValue(){return this._value;}
