@@ -78,3 +78,18 @@ Orion :: Implemented variables, but only in the form ( / 6 x ) ( let x 12.0 ) wh
 Orion :: Implemented assigning variables to variables e.g. (/ 6 y) (let y x) (let x 12.0)
 Joshua :: Fixed parenthesis bug (no longer require spaces between each token)
 ==============================================================
+
+2022-06-03
+--------------------------------------------------------------
+Orion, Joshua & Jonathan :: Began work on boolean values and operations (and, or, not)
+==============================================================
+
+2022-06-05
+--------------------------------------------------------------
+Joshua :: Finished work started 2022-06-03
+==============================================================
+
+2022-06-06
+--------------------------------------------------------------
+Orion, Joshua & Jonathan :: Began working on flipping the tokens around so that statements are executed from left to right.
+==============================================================
