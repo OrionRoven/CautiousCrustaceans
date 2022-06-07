@@ -89,8 +89,8 @@ class Interpreter {
     String value = _evalStack.pop();
     int type = 0;
     if (!isValuey(value)){
-      value = _vars.get(value).getValue();
       type = _vars.get(value).getType();
+      value = _vars.get(value).getValue();
     }
     else if (isInty(value)) {
       type = Value.INTEGER;
