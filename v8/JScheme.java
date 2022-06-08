@@ -23,19 +23,38 @@ public class JScheme {
     try {
       File f = new File(args[0]);
       Scanner sc = new Scanner(f);
-      sc.useDelimiter("\\s+");
+      sc.useDelimiter("");
       String next = "";
+      String token = "";
+      List<String> tokens = new ArrayList<String>();
       while (sc.hasNext()) {
         next = sc.next();
-        if(next.length()>1 && next.charAt(0) == '('){
-          next = " ( " + next.substring(1);
+        if(next.matches("\\s+")){
+          if(token.length() > 0){
+            tokens.add(token);
+            token = "";
+          }
+          continue;
         }
-        if(next.length()>1 && next.charAt(next.length()-1) == ')'){
-          next = next.substring(0,next.length() - 1)+ " ) ";
+        if(next.equals("(")||next.equals(")")){
+          if(token.length() > 0){
+            tokens.add(token);
+            token = "";
+          }
+          tokens.add(next);
+          continue;
         }
-        in += " " + next + " ";
+        token += next;
       }
-      List<String> tokens = Arrays.asList(in.split("\\s+"));
+       // next = sc.next();
+      //  if(next.length()>1 && next.charAt(0) == '('){
+       //   next = " ( " + next.substring(1);
+      //  }
+       // if(next.length()>1 && next.charAt(next.length()-1) == ')'){
+         // next = next.substring(0,next.length() - 1)+ " ) ";
+       // }
+        //in += next;  
+//      List<String> tokens = Arrays.asList(in.split("\\s+"));
       String before = "";
       String after = "";
       for (String t : tokens) {
@@ -258,27 +277,37 @@ class Interpreter {
     if (s.equals("true") || s.equals("false")){return true;} return false;
   }
   public static void flippydoo(List<String> input){
+    //Get the subrange that needs flippydooing in the first place
+    int first = 0;
+    int last = input.size()-1;
+    while(first < input.size() && !input.get(first).equals("(")){
+      first ++;
+    }
+    while(last >= 0 && !input.get(last).equals(")")){
+      last--;
+    }
+    if(last <= first){return;}
+//    System.out.println(""+ first+last);
+    List<String> region = input.subList(first, last + 1);
     int start = 0;
     int count = 0;
-    for (int i = 0; i < input.size(); i++){
-      if(input.get(i).equals("(")){
-        if (count == 0) {
+    Collections.reverse(region);
+    for(int i =0; i< region.size(); i++){
+      if(region.get(i).equals(")")){
+        if(count == 0){
           start = i;
         }
-        count ++;
+        count++;
       }
-      else if(input.get(i).equals(")")){
-        count --;
-        if (count == 0) {
-          flippydoo(input.subList(start+1, i));
-          input.set(start, ")");
-          input.set(i, "(");
+      if(region.get(i).equals("(")){
+        count--;
+        if(count==0){
+          Collections.reverse(region.subList(start, i+1));
+          //flippydoo(region.subList(start +1, i));
         }
       }
     }
-    Collections.reverse(input);
   }
-
 }
 
 class Value{
