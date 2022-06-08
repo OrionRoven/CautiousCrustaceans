@@ -89,7 +89,7 @@ Orion, Joshua & Jonathan :: Began work on boolean values and operations (and, or
 Joshua :: Finished work started 2022-06-03
 ==============================================================
 
-2022-06-06
+2022-06-07
 --------------------------------------------------------------
-Orion, Joshua & Jonathan :: Began working on flipping the tokens around so that statements are executed from left to right.
+
 ==============================================================

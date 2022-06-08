@@ -1,1 +1,1 @@
-(/ 6 x) (let x y) (let y 12.0)
+(let x 12) (let y x) (/ 6 y)
