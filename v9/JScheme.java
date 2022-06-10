@@ -56,22 +56,37 @@ public class JScheme {
         //in += next;
 //      List<String> tokens = Arrays.asList(in.split("\\s+"));
       /*String before = "";
+      String mid = "";
       String after = "";
       for (String t : tokens) {
       	before += t + " ";
       }
       System.out.println(before);
-      Interpreter.flippydoo(tokens);
+      Interpreter.flippydo(tokens);
+      for (String t : tokens) {
+      	mid += t + " ";
+      }
+      System.out.println(mid);
+      Interpreter.ifParse(tokens);
       for (String t : tokens) {
       	after += t + " ";
       }
       System.out.println(after);*/
-      Interpreter.flippydoo(tokens);
+      //Interpreter.flippydo(tokens);
+      //Interpreter.ifParse(tokens);
       //for (String tk : tokens) {
       //  System.out.println(tk);
       //}
+      //for(String t : tokens){System.out.print(t);}
+      //System.out.println();
+      Interpreter.flippydo(tokens);
+      //for(String t : tokens){System.out.print(t);}
+      //System.out.println();
+      Interpreter.ifParse(tokens);
+      //for(String t : tokens){System.out.print(t);}
+      //System.out.println();
       Interpreter master = new Interpreter(tokens);
-      System.out.println(master.evaluate());
+      master.evaluate();
     }
     catch(FileNotFoundException e) {
       System.out.println("Error: Could not find file " + e.getMessage());
@@ -90,19 +105,111 @@ class Interpreter {
     _evalStack = new Stack<>();
     _vars = new HashMap<>();
   }
-  public String evaluate() {
+  private Interpreter(List<String> tokens, HashMap<String, Value> vars){
+    _tokens = tokens;
+    _evalStack = new Stack<>();
+    _vars = vars;
+  }
+  public static void preProcess(List<String> tokens){
+    flippydo(tokens);
+    ifParse(tokens);
+  }
+  public void evaluate() {
     String op = "";
-    for (int i = _tokens.size() - 1; i >= 1; i--) {
+    boolean cond;
+    int count = 0;
+    int midpoint = 0;
+    int pos = 0;
+    Interpreter helper;
+    List<String> subtokens;
+    for (int i = _tokens.size() - 1; i >= 0; i--) {
+      if (this._tokens.get(i).equals("if")){
+        cond = Boolean.parseBoolean(_evalStack.pop());
+        //System.out.println(cond);
+        if(! cond){
+          //False condition
+          //System.out.println("False!");
+          count=1;
+          pos = i-2;
+          while(count != 0){
+            if(_tokens.get(pos).equals(")")){
+              count++;
+            }
+            if(_tokens.get(pos).equals("(")){
+              count--;
+            }
+            pos--;
+          }
+          subtokens = _tokens.subList(pos +2, i -1);
+          helper = new Interpreter(subtokens, _vars);
+          helper.evaluate();
+          count = 1;
+          pos--; 
+          while(count != 0){
+            if(_tokens.get(pos).equals(")")){
+              count++;
+            }
+            if(_tokens.get(pos).equals("(")){
+              count--;
+            }
+            pos--;
+          }
+          i = pos -2;
+          continue;
+        }
+        else{
+          //True condition
+          count=1;
+          pos = i-2;
+          while(count != 0){
+            if(_tokens.get(pos).equals(")")){
+              count++;
+            }
+            if(_tokens.get(pos).equals("(")){
+              count--;
+            }
+            pos--;
+          }
+          midpoint = pos;
+          count = 1;
+          pos --;
+          while(count != 0){
+            if(_tokens.get(pos).equals(")")){
+              count++;
+            }
+            if(_tokens.get(pos).equals("(")){
+              count--;
+            }
+            pos--;
+          }
+          subtokens = _tokens.subList(pos +2, midpoint);
+          helper = new Interpreter(subtokens, _vars);
+          helper.evaluate();
+          i = pos -2;
+          continue;
+        }
+      }
+      if (i < 0){break;}
       if (this._tokens.get(i).equals("(")) {
         op = _evalStack.pop();
-        this.unpack(op);
+        if(!op.equals("break")){
+          this.unpack(op);
+        }
+        else{
+          break;
+        }
+        //System.out.println("Unpacking!");
       }
       else{
         _evalStack.push(this._tokens.get(i));
       }
     }
-
-    return _evalStack.peek();
+  }
+  private String varDecode(String s){
+    if(!isValuey(s)){
+      return _vars.get(s).getValue();
+    }
+    return s;
   }
   private void unpack(String op){
     if (op.equals("pass")) {
@@ -112,7 +219,15 @@ class Interpreter {
     if (op.equals("let")){
       this.addVar();
     }
+    if (op.equals("println")){
+      System.out.println(varDecode(_evalStack.pop()));
+      _evalStack.pop();
+    }
+    if (op.equals("=") || op.equals("<") || op.equals(">")){
+      _evalStack.push(this.compareify(op));
+    }
     if (op.equals("*") || op.equals("-") || op.equals("+") || op.equals("/")) {
+      //System.out.println("Mathifying!");
       _evalStack.push(this.mathify(op));
     }
     if (op.equals("and") || op.equals("or") || op.equals("not")) {
@@ -137,6 +252,19 @@ class Interpreter {
     _vars.put(name, new Value(type, value));
     _evalStack.pop();
    }
+  private String compareify (String op) {
+    String first = varDecode(_evalStack.pop());
+    String second = varDecode(_evalStack.pop());
+    if(op.equals("=")){
+      return String.valueOf(Double.parseDouble(first) == Double.parseDouble(second));
+    }
+    else if(op.equals("<")){
+      return String.valueOf(Double.parseDouble(first) <  Double.parseDouble(second));
+    }
+    else {
+      return String.valueOf(Double.parseDouble(first) >  Double.parseDouble(second));
+    }
+  }
   private String boolify (String op) {
     String first = _evalStack.pop();
     if (!isBooly(first)){ first = _vars.get(first).getValue();}
@@ -280,8 +408,8 @@ class Interpreter {
   public static boolean isBooly(String s){
     if (s.equals("true") || s.equals("false")){return true;} return false;
   }
-  public static void flippydoo(List<String> input){
-    //Get the subrange that needs flippydooing in the first place
+  public static void flippydo(List<String> input){
+    //Get the subrange that needs flippydoing in the first place
     int first = 0;
     int last = input.size()-1;
     while(first < input.size() && !input.get(first).equals("(")){
@@ -307,8 +435,46 @@ class Interpreter {
         count--;
         if(count==0){
           Collections.reverse(region.subList(start, i+1));
-          //flippydoo(region.subList(start +1, i));
+          //flippydo(region.subList(start +1, i));
         }
+      }
+    }
+  }
+  public static void ifParse(List<String> input){
+    int count = 0;
+    int pos = 0;
+    int midpoint = 0;
+    for(int i = 0; i < input.size(); i++){
+      if(input.get(i).equals("if")){
+        count++;
+        pos = i+2;
+        while(count != 0){
+          if(input.get(pos).equals("(")){
+            count++;
+          }
+          if(input.get(pos).equals(")")){
+            count--;
+          }
+          pos++;
+        }
+        midpoint = pos;
+        count ++;
+        pos ++;
+        preProcess(input.subList(i+2, midpoint-1));
+        while(count != 0){
+          if(input.get(pos).equals("(")){
+            count++;
+          }
+          if(input.get(pos).equals(")")){
+            count--;
+          }
+          pos++;
+        }
+        preProcess(input.subList(midpoint +1, pos -1));
+        Collections.rotate(input.subList(i, pos), -1);
+        i = pos;
+        count = 0;
+        midpoint = 0;
       }
     }
   }
