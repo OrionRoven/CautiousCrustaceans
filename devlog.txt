@@ -11,7 +11,9 @@ Scheme/Lisp interpreter
 ------------------------------------------
 OBSTACLES OVERCOME
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-* parenthesis stuff
+* Our code works by pushing tokens into a stack that come from a .scm file and are split on white space.
+* Before we split on white space we replace every "(" with " ( " and every ")" with " ) "
+
 
 UNRESOLVED ISSUES
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,6 +29,7 @@ COOL STUFF LEARNED
 
 MID-DEVELOPMENT DESIGN CHANGES
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 
 LESSONS LEARNED
@@ -91,5 +94,10 @@ Joshua :: Finished work started 2022-06-03
 
 2022-06-07
 --------------------------------------------------------------
+Orion, Joshua & Jonathan :: Attempted to fix flippydoo (code currently reads from right to left so we need to flip everything within the parenthesis and the flip the entire thing before we split on white space)
+==============================================================
 
+2022-06-09
+--------------------------------------------------------------
+Orion, Joshua & Jonathan :: Fixed flippydoo.
 ==============================================================
