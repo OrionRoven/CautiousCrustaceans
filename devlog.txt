@@ -12,29 +12,28 @@ Scheme/Lisp interpreter
 OBSTACLES OVERCOME
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 * Our code works by pushing tokens into a stack that come from a .scm file and are split on white space.
-* Before we split on white space we replace every "(" with " ( " and every ")" with " ) "
-
+* In some cases, the stack approach, which worked well for simple math expressions, was difficult for more complicated expressions. We needed a pre-processing step to modify "loop" and "if" statements so that they could be properly read by the interpreter.
+* The stack-based interpreter naturally reads statements in a right to left order. When we have multiple expressions in a sequence, this originally caused the execution order to be reversed. We were able to fix this in the preprocessing stage, where we came up with an algorithm called "flippydo". 
 
 UNRESOLVED ISSUES
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-* (- 7 (+ 1 5) ) does not compile while (- 7 (+ 1 5)) does
-* Problem with spacing of parenthesis
-* Solution: Spaces are REQUIRED between every token.
-* Added the ( pass ) keyword which simply does nothing. This will be useful when we want to create conditional statements. Instead of having seperate if and if-else commands, we can just have an if-else command and do nothing if the condition is false
-TODO: evaluate multiple math expressions in the same file
 
 COOL STUFF LEARNED
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 * useDelimiter() for scanner
+* HashMaps are like Python dictionaries, but in Java
+* List.subList() allows you to take Rust-like mutable slices of collections.
+* Collections.swap(), Collections.reverse(), and Collections.rotate() are easy ways to swap elements in a collection, reverse an entire collection, or rotate a collection by some amount.
 
 MID-DEVELOPMENT DESIGN CHANGES
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+* The String type which we had planned went undeveloped, as our code was already quite complicated. We didn't have enough time to implement a system of functions, although one could probably adapt our variable and control flow code to allow functions to be called as seperate Interpreter instances.
 
 
 LESSONS LEARNED
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+* Being realistic about a project is important. Running into bugs is common, and fixing them takes longer than you think.
+* A well-planned project with slow execution will take far less time than a poorly planned one where you implement ideas quickly.
 
 
 
@@ -99,5 +98,10 @@ Orion, Joshua & Jonathan :: Attempted to fix flippydoo (code currently reads fro
 
 2022-06-09
 --------------------------------------------------------------
-Orion, Joshua & Jonathan :: Fixed flippydoo.
+Orion, Joshua & Jonathan :: Planned out the conditional and looping functionality.
+==============================================================
+
+2022-06-09
+--------------------------------------------------------------
+Orion, Joshua & Jonathan :: Fixed flippydoo. Added the break, println, loop, and if keywords. Moved from a String[] representing the tokens to a List<String>. Created a program which calculates Euler's number to arbitrary precision. Added the option to write programs in the terminal.
 ==============================================================

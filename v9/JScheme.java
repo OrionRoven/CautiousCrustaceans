@@ -79,12 +79,11 @@ public class JScheme {
       //}
       //for(String t : tokens){System.out.print(t);}
       //System.out.println();
-      Interpreter.flippydo(tokens);
       //for(String t : tokens){System.out.print(t);}
       //System.out.println();
-      Interpreter.ifParse(tokens);
       //for(String t : tokens){System.out.print(t);}
       //System.out.println();
+      Interpreter.preProcess(tokens);
       Interpreter master = new Interpreter(tokens);
       master.evaluate();
     }
@@ -111,18 +110,45 @@ class Interpreter {
     _vars = vars;
   }
   public static void preProcess(List<String> tokens){
+    //System.out.println(tokens.toString());
     flippydo(tokens);
+    //System.out.println(tokens.toString());
     ifParse(tokens);
+    //System.out.println(tokens.toString());
+    loopParse(tokens);
+    //System.out.println(tokens.toString());
   }
-  public void evaluate() {
+  //True means evaluated without problem, false means "break" was used.
+  public boolean evaluate() {
     String op = "";
-    boolean cond;
+    boolean cond = true;
     int count = 0;
     int midpoint = 0;
     int pos = 0;
     Interpreter helper;
     List<String> subtokens;
     for (int i = _tokens.size() - 1; i >= 0; i--) {
+      if (this._tokens.get(i).equals("loop")){
+        count =1;
+        pos= i-2;
+        while(count != 0){
+          if(_tokens.get(pos).equals(")")){
+            count++;
+          }
+          if(_tokens.get(pos).equals("(")){
+            count--;
+          }
+          pos--;
+        }
+        subtokens = _tokens.subList(pos +2, i -1);
+        //System.out.println(subtokens.toString());
+        helper = new Interpreter(subtokens, _vars);
+        while(cond){
+          cond = helper.evaluate();
+        }
+        i = pos -2;
+        continue;
+      }
       if (this._tokens.get(i).equals("if")){
         cond = Boolean.parseBoolean(_evalStack.pop());
         //System.out.println(cond);
@@ -141,8 +167,9 @@ class Interpreter {
             pos--;
           }
           subtokens = _tokens.subList(pos +2, i -1);
+          //System.out.println(subtokens.toString());
           helper = new Interpreter(subtokens, _vars);
-          helper.evaluate();
+          if(!helper.evaluate()) {return false;}
           count = 1;
           pos--; 
           while(count != 0){
@@ -183,20 +210,21 @@ class Interpreter {
             pos--;
           }
           subtokens = _tokens.subList(pos +2, midpoint);
+          //System.out.println(subtokens.toString());
           helper = new Interpreter(subtokens, _vars);
-          helper.evaluate();
+          if(!helper.evaluate()) {return false;}
           i = pos -2;
           continue;
         }
       }
-      if (i < 0){break;}
+      if (i < 0){return false;}
       if (this._tokens.get(i).equals("(")) {
         op = _evalStack.pop();
         if(!op.equals("break")){
           this.unpack(op);
         }
         else{
-          break;
+          return false;
         }
         //System.out.println("Unpacking!");
       }
@@ -204,6 +232,7 @@ class Interpreter {
         _evalStack.push(this._tokens.get(i));
       }
     }
+    return true;
   }
   private String varDecode(String s){
     if(!isValuey(s)){
@@ -440,6 +469,30 @@ class Interpreter {
       }
     }
   }
+  public static void loopParse(List<String> input){
+    int count =0;
+    int pos = 0;
+    List<String> subtokens;
+    for(int i = 0; i < input.size(); i++){
+      if(input.get(i).equals("loop")){
+        count ++;
+        pos = i+2;
+        while(count != 0){
+          if(input.get(pos).equals("(")){
+            count++;
+          }
+          if(input.get(pos).equals(")")){
+            count--;
+          }
+          pos++;
+        }
+        subtokens = input.subList(i+2, pos -1);
+        flippydo(subtokens);
+        Collections.rotate(input.subList(i, pos),-1);
+        i = pos;
+      }
+    }
+  }
   public static void ifParse(List<String> input){
     int count = 0;
     int pos = 0;
@@ -470,7 +523,7 @@ class Interpreter {
           }
           pos++;
         }
-        preProcess(input.subList(midpoint +1, pos -1));
+        flippydo(input.subList(midpoint +1, pos -1));
         Collections.rotate(input.subList(i, pos), -1);
         i = pos;
         count = 0;

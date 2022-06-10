@@ -1,1 +1,3 @@
-(let x 1)(let y 2)(if (println 0) (if (println 1) (println 2) (> x y))(= x y))
+(let x 0)(loop (
+  (println x)(let x (+ x 1))(if ((break)) ((pass)) (> x 25))
+ ))
